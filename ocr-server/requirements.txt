@@ -1,5 +1,5 @@
 # Minimum versions sit above known security fixes (multipart parsing, HTTP/1.1, Starlette, Pillow).
-fastapi>=0.115
+fastapi>=0.162.2
 starlette>=0.47.2
 uvicorn>=0.30
 python-multipart>=0.0.18
