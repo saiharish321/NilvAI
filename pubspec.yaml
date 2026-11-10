@@ -1,0 +1,29 @@
+name: nilvai
+description: Offline Telugu/English shop app for small grocery stores, with AI receipt reading.
+publish_to: 'none'
+version: 0.2.0+1
+
+environment:
+  sdk: '>=3.5.0 <4.0.0'
+
+# Only widely used packages, most published by the Flutter/Dart teams or Flutter Community.
+dependencies:
+  flutter:
+    sdk: flutter
+  sqflite: ^2.4.1          # SQLite storage (tekartik, the standard Flutter SQLite plugin)
+  path: ^1.9.0             # dart.dev
+  path_provider: ^2.1.5    # flutter.dev
+  share_plus: ^11.0.0      # Flutter Community: Android share sheet
+  image_picker: ^1.1.2     # flutter.dev: camera and gallery, no permissions needed
+  file_picker: ^10.1.0     # import CSV / backup files
+  http: ^1.2.2             # dart.dev: talks to the OCR server
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^5.0.0
+
+flutter:
+  uses-material-design: true
+  assets:
+    - assets/sample_catalogue.csv

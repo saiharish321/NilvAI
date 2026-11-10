@@ -1,0 +1,22 @@
+# Flutter
+.dart_tool/
+.packages
+build/
+.flutter-plugins
+.flutter-plugins-dependencies
+*.iml
+.idea/
+.vscode/
+android/.gradle/
+android/local.properties
+android/key.properties
+android/app/*.jks
+*.keystore
+# Real shop data never goes in the public repo
+private/
+item_master*.csv
+results*.json
+labels*.csv
+ocr-server/photos/
+__pycache__/
+.venv/

@@ -1,0 +1,94 @@
+name: Build APK
+
+on:
+  push:
+    branches: [main]
+    tags: ['v*']
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  # Known-vulnerability scan of the OCR server's Python packages. Blocks the APK build if it fails.
+  # (Dart/Flutter packages are scanned by GitHub's dependency graph and Dependabot.)
+  audit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: pip-audit (OCR server)
+        run: |
+          pip install pip-audit
+          pip-audit -r ocr-server/requirements.txt --strict
+
+  apk:
+    needs: audit
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 17
+
+      - uses: subosito/flutter-action@v2
+        with:
+          channel: stable
+          cache: true
+
+      # The Android folder is generated from Flutter's own template, then Nilvai's settings are applied.
+      - name: Android project
+        run: |
+          if [ ! -d android ]; then
+            flutter create --org org.nilvai --project-name nilvai --platforms android .
+            rm -f test/widget_test.dart
+          fi
+          python3 tool/patch_android.py
+
+      - name: Dependencies
+        run: flutter pub get
+
+      - name: Static analysis
+        run: flutter analyze --no-fatal-infos
+
+      - name: Unit tests
+        run: flutter test
+
+      # Release build signed with the private key when the secret exists.
+      # Without it (forks, pull requests) the APK is signed with a throwaway debug key: testing only.
+      - name: Build APK
+        env:
+          KEY_B64: ${{ secrets.NILVAI_KEYSTORE_B64 }}
+          NILVAI_STORE_PASSWORD: ${{ secrets.NILVAI_STORE_PASSWORD }}
+          NILVAI_KEY_ALIAS: nilvai
+        run: |
+          if [ -n "$KEY_B64" ]; then
+            echo "$KEY_B64" | base64 -d > "$RUNNER_TEMP/release.jks"
+            export NILVAI_KEYSTORE="$RUNNER_TEMP/release.jks"
+            OUT=nilvai-${{ github.run_number }}.apk
+          else
+            echo "::warning::No signing key secret: APK is signed with a throwaway key. Do not install it on the shop phone."
+            OUT=nilvai-${{ github.run_number }}-test.apk
+          fi
+          flutter build apk --release --build-number=${{ github.run_number }} --build-name=0.2.${{ github.run_number }}
+          cp build/app/outputs/flutter-apk/app-release.apk "$OUT"
+          rm -f "$RUNNER_TEMP/release.jks"
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: nilvai-apk-${{ github.run_number }}
+          path: nilvai-${{ github.run_number }}*.apk
+
+      # Tag a commit (git tag v0.2.0 && git push --tags) to publish a release the phone can download.
+      - name: Publish release
+        if: startsWith(github.ref, 'refs/tags/v') && hashFiles('nilvai-*-test.apk') == ''
+        run: |
+          cp nilvai-${{ github.run_number }}.apk nilvai.apk
+          gh release create "${GITHUB_REF_NAME}" nilvai.apk --title "Nilvai ${GITHUB_REF_NAME}" --generate-notes
+        env:
+          GH_TOKEN: ${{ github.token }}
