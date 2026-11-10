@@ -275,7 +275,7 @@ class Db {
         'date': date,
         'datetime': DateTime.now().toIso8601String(),
         'source': source,
-        'total': keep.fold(0.0, (s, l) => s + l.qty * l.price),
+        'total': keep.fold<double>(0.0, (s, l) => s + l.qty * l.price),
         'receipt_id': receiptId,
       });
       for (final l in keep) {

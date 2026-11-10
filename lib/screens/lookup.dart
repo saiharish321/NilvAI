@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import '../logic.dart';
 import '../state.dart';
 import '../widgets.dart';
+import 'more.dart';
 
 /// Home: type a few letters in Telugu or English and see every pack size and its price.
 class LookupScreen extends StatefulWidget {
@@ -29,9 +30,20 @@ class _LookupScreenState extends State<LookupScreen> {
             ),
             const SizedBox(height: 8),
             if (app.packs.isEmpty)
-              const Padding(
-                padding: EdgeInsets.all(24),
-                child: Center(child: Bi('సరుకుల జాబితా లేదు', 'No catalogue yet: ☰ → Export & backup → Import')),
+              Padding(
+                padding: const EdgeInsets.all(24),
+                child: Column(children: [
+                  const Bi('సరుకుల జాబితా లేదు', 'No catalogue yet'),
+                  const SizedBox(height: 16),
+                  FilledButton.icon(
+                    style: FilledButton.styleFrom(
+                        minimumSize: const Size(0, 56), textStyle: const TextStyle(fontSize: 18)),
+                    icon: const Icon(Icons.file_download),
+                    label: const Text('సరుకుల జాబితా దిగుమతి / Import catalogue'),
+                    onPressed: () =>
+                        Navigator.push(context, MaterialPageRoute(builder: (_) => const DataScreen())),
+                  ),
+                ]),
               ),
             for (final id in items) _itemCard(id),
           ]);

@@ -83,7 +83,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
     final bb = purchases.where((p) => p['channel'] == 'bigbasket').toList();
     final bbWeek = bb.where((p) => (p['date'] as String).compareTo(weekAgo) >= 0).toList();
     cards.add(DashCard(te: 'అత్యవసర ఆర్డర్లు', en: 'BigBasket rescue orders', concept: 'Service level / stockouts (OM)', children: [
-      Text('${bbWeek.length} this week · ${rs0(bbWeek.fold(0.0, (s, p) => s + num0(p['value'])))}',
+      Text('${bbWeek.length} this week · ${rs0(bbWeek.fold<double>(0.0, (s, p) => s + num0(p['value'])))}',
           style: const TextStyle(fontSize: 26, fontWeight: FontWeight.bold)),
       Text('${bb.length} in total', style: const TextStyle(color: Colors.black54)),
     ]));

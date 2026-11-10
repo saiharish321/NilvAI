@@ -159,7 +159,7 @@ class Qty {
   final double base; // kg, L or pieces
   const Qty(this.dim, this.base);
   @override
-  bool operator ==(Object o) => o is Qty && o.dim == dim && (o.base - base).abs() < 1e-9;
+  bool operator ==(Object other) => other is Qty && other.dim == dim && (other.base - base).abs() < 1e-9;
   @override
   int get hashCode => Object.hash(dim, base);
   @override
