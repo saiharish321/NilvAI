@@ -145,7 +145,7 @@ class _PurchaseScreenState extends State<PurchaseScreen> {
           value: _bigbasket,
           onChanged: (v) => setState(() => _bigbasket = v ?? false),
           title: const Bi('అత్యవసర ఆర్డర్', '🛒 BigBasket prepaid rescue order'),
-          tileColor: const Color(0xFFFFF3EC),
+          tileColor: surfaceTint,
         ),
         const SizedBox(height: 8),
         LineEditor(lines: _lines, mode: LineMode.purchase),

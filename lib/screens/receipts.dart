@@ -284,7 +284,10 @@ class _ConfirmScreenState extends State<ConfirmScreen> {
           child: Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
             Container(
               padding: const EdgeInsets.all(8),
-              decoration: BoxDecoration(color: const Color(0xFFFFF8E1), borderRadius: BorderRadius.circular(6)),
+              decoration: BoxDecoration(
+                  color: surfaceTint,
+                  borderRadius: BorderRadius.circular(8),
+                  border: Border.all(color: brandTeal.withValues(alpha: 0.5))),
               child: Text(
                   '📝 ${d.raw.itemText}${d.raw.itemEn.isNotEmpty ? ' (${d.raw.itemEn})' : ''} · '
                   '${d.raw.qtyValue > 0 ? d.raw.qtyValue : ''} ${d.raw.qtyUnit} · ${rs(d.raw.amount)}',

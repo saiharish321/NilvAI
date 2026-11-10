@@ -21,15 +21,7 @@ class NilvaiApp extends StatelessWidget {
   Widget build(BuildContext context) => MaterialApp(
         title: 'Nilvai',
         debugShowCheckedModeBanner: false,
-        theme: ThemeData(
-          colorScheme: ColorScheme.fromSeed(seedColor: brand),
-          useMaterial3: true,
-          scaffoldBackgroundColor: const Color(0xFFFAF7F0),
-          visualDensity: VisualDensity.standard,
-          inputDecorationTheme: const InputDecorationTheme(border: OutlineInputBorder()),
-          filledButtonTheme: FilledButtonThemeData(
-              style: FilledButton.styleFrom(minimumSize: const Size(64, 52), textStyle: const TextStyle(fontSize: 17))),
-        ),
+        theme: nilvaiTheme(),
         // Larger text throughout: the app is used at a shop counter.
         builder: (context, child) => MediaQuery(
           data: MediaQuery.of(context).copyWith(textScaler: MediaQuery.of(context).textScaler.clamp(minScaleFactor: 1.1)),
@@ -84,8 +76,6 @@ class _ShellState extends State<Shell> {
         listenable: app,
         builder: (context, _) => Scaffold(
           appBar: AppBar(
-            backgroundColor: brand,
-            foregroundColor: Colors.white,
             title: Text(app.settings['shop_name'] ?? 'Nilvai'),
             actions: [
               TextButton.icon(
@@ -107,11 +97,18 @@ class _ShellState extends State<Shell> {
             onDestinationSelected: (i) => setState(() => _tab = i),
             labelBehavior: NavigationDestinationLabelBehavior.alwaysShow,
             destinations: const [
-              NavigationDestination(icon: Icon(Icons.search), label: 'ధర Price'),
-              NavigationDestination(icon: Icon(Icons.receipt_long), label: 'అమ్మకం Sale'),
-              NavigationDestination(icon: Icon(Icons.photo_camera), label: 'రసీదు Bills'),
-              NavigationDestination(icon: Icon(Icons.inventory_2), label: 'సరుకు Stock'),
-              NavigationDestination(icon: Icon(Icons.insights), label: 'లెక్క Report'),
+              NavigationDestination(
+                  icon: Icon(Icons.search_rounded), selectedIcon: Icon(Icons.manage_search_rounded), label: 'ధర Price'),
+              NavigationDestination(
+                  icon: Icon(Icons.receipt_long_outlined), selectedIcon: Icon(Icons.receipt_long), label: 'అమ్మకం Sale'),
+              NavigationDestination(
+                  icon: Icon(Icons.document_scanner_outlined),
+                  selectedIcon: Icon(Icons.document_scanner),
+                  label: 'రసీదు Bills'),
+              NavigationDestination(
+                  icon: Icon(Icons.inventory_2_outlined), selectedIcon: Icon(Icons.inventory_2), label: 'సరుకు Stock'),
+              NavigationDestination(
+                  icon: Icon(Icons.insights_outlined), selectedIcon: Icon(Icons.insights), label: 'లెక్క Report'),
             ],
           ),
         ),
