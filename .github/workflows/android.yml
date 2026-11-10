@@ -79,7 +79,7 @@ jobs:
           cp build/app/outputs/flutter-apk/app-release.apk "$OUT"
           rm -f "$RUNNER_TEMP/release.jks"
 
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
         with:
           name: nilvai-apk-${{ github.run_number }}
           path: nilvai-${{ github.run_number }}*.apk
