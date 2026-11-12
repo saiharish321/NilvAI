@@ -8,6 +8,7 @@ import '../files.dart';
 import '../logic.dart';
 import '../state.dart';
 import '../widgets.dart';
+import 'restock_planner.dart';
 
 class MoreScreen extends StatelessWidget {
   const MoreScreen({super.key});
@@ -25,7 +26,8 @@ class MoreScreen extends StatelessWidget {
       appBar: AppBar(title: const Bi('మరిన్ని', 'More')),
       body: ListView(padding: const EdgeInsets.all(12), children: [
         tile(Icons.menu_book, 'సరుకుల జాబితా', 'Catalogue', const CatalogueScreen()),
-        tile(Icons.science, 'ట్రయల్', 'Product trials', const TrialsScreen()),
+        tile(Icons.inventory_2, 'కొనుగోలు సూచన', 'Restock planner', const RestockPlannerScreen()),
+        tile(Icons.science,'ట్రయల్', 'Product trials', const TrialsScreen()),
         tile(Icons.balance, 'నిర్ణయ నియమం', 'Decision rule', const DecisionScreen()),
         tile(Icons.ios_share, 'ఎగుమతి / బ్యాకప్', 'Export & backup', const DataScreen()),
         tile(Icons.settings, 'సెట్టింగ్స్', 'Settings', const SettingsScreen()),
