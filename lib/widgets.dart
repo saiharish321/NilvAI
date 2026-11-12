@@ -1,10 +1,54 @@
+import 'package:flex_color_scheme/flex_color_scheme.dart';
 import 'package:flutter/material.dart';
 
 import 'db.dart';
 import 'logic.dart';
 import 'state.dart';
 
-const brand = Color(0xFFB5501F);
+// Look: FlexColorScheme's open-source "Blue Whale" scheme (MIT, github.com/rydmike/flex_color_scheme),
+// with its orange accents swapped for teal and sky blue.
+const brand = FlexColor.blueWhaleLightPrimary; // deep navy
+const brandTeal = FlexColor.blueWhaleLightPrimaryVariant; // teal
+const surfaceTint = Color(0xFFE6F2F1);
+
+ThemeData nilvaiTheme() => FlexThemeData.light(
+      colors: FlexColor.schemes[FlexScheme.blueWhale]!.light.copyWith(
+        secondary: brandTeal,
+        secondaryContainer: FlexColor.blueWhaleLightPrimaryContainer,
+        tertiary: const Color(0xFF219EBC),
+        tertiaryContainer: const Color(0xFFB8E3F0),
+      ),
+      surfaceMode: FlexSurfaceMode.levelSurfacesLowScaffold,
+      blendLevel: 7,
+      appBarStyle: FlexAppBarStyle.primary,
+      appBarElevation: 0,
+      visualDensity: VisualDensity.standard,
+      subThemesData: const FlexSubThemesData(
+        defaultRadius: 8,
+        cardElevation: 0,
+        inputDecoratorIsFilled: true,
+        inputDecoratorBorderType: FlexInputBorderType.outline,
+        inputDecoratorUnfocusedHasBorder: false,
+        navigationBarIndicatorSchemeColor: SchemeColor.primaryContainer,
+        navigationBarSelectedIconSchemeColor: SchemeColor.primary,
+        navigationBarSelectedLabelSchemeColor: SchemeColor.primary,
+        navigationBarLabelBehavior: NavigationDestinationLabelBehavior.alwaysShow,
+        navigationBarHeight: 72,
+        snackBarBackgroundSchemeColor: SchemeColor.primary,
+      ),
+    ).copyWith(
+      // Big tap targets for the shop counter.
+      filledButtonTheme: FilledButtonThemeData(
+          style: FilledButton.styleFrom(
+              minimumSize: const Size(64, 52),
+              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+              textStyle: const TextStyle(fontSize: 17, fontWeight: FontWeight.w600))),
+      outlinedButtonTheme: OutlinedButtonThemeData(
+          style: OutlinedButton.styleFrom(
+              minimumSize: const Size(64, 52),
+              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+              textStyle: const TextStyle(fontSize: 16, fontWeight: FontWeight.w600))),
+    );
 
 /// Telugu label with English beside it.
 class Bi extends StatelessWidget {
@@ -16,7 +60,11 @@ class Bi extends StatelessWidget {
     final base = style ?? DefaultTextStyle.of(context).style;
     return Text.rich(TextSpan(children: [
       TextSpan(text: te, style: base),
-      TextSpan(text: '  $en', style: base.copyWith(color: Colors.black54, fontWeight: FontWeight.normal)),
+      // English in a softer shade of the same colour, so it also reads on the dark app bar.
+      TextSpan(
+          text: '  $en',
+          style: base.copyWith(
+              color: (base.color ?? Colors.black).withValues(alpha: 0.6), fontWeight: FontWeight.normal)),
     ]));
   }
 }

@@ -16,7 +16,9 @@ usable at the counter in under 10 seconds.
 
 ## Stack
 Flutter, Material 3. Packages: sqflite, path, path_provider, share_plus (^11, `SharePlus.instance.share(ShareParams(...))`),
-image_picker, file_picker, http. Search and Telugu transliteration are our own code in `lib/logic.dart`
+image_picker, file_picker, http, flex_color_scheme (^8.4; the theme is FlexScheme.blueWhale with teal accents
+instead of orange, in `nilvaiTheme()` in `lib/widgets.dart`; 9.x needs the separate material_ui package and does
+not build with our Flutter SDK). Search and Telugu transliteration are our own code in `lib/logic.dart`
 (no fuzzy-search library). Do not add packages unless essential; if you must, use widely used ones.
 
 ## Layout
